@@ -45,6 +45,11 @@ public class EventContract {
 			return CONTENT_URI.buildUpon().appendPath("on").appendPath(day).build();
 		}
 		
+		public static Uri buildEventsOn(String day, String location) {
+			return CONTENT_URI.buildUpon().appendPath("on").appendPath(day)
+										  .appendPath("in").appendPath(location).build();
+		}
+		
 		public static String getEventId(Uri uri) {
             return uri.getPathSegments().get(0);
         }

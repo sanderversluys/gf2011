@@ -28,7 +28,7 @@ public class LocationActivity extends BaseActivity implements OnItemClickListene
 			
 			day = extras.getString(DAY);
 			
-			Cursor cursor = getContentResolver().query(Locations.buildLocationsOnDayUri("17/07/2011"), EventContract.LOCATION_PROJECTION, null, null, null);
+			Cursor cursor = getContentResolver().query(Locations.buildLocationsOnDayUri(day), EventContract.LOCATION_PROJECTION, null, null, null);
 			startManagingCursor(cursor);
 			
 			String[] columns = new String[] { Events.EVENT_LOCATION };
@@ -50,7 +50,8 @@ public class LocationActivity extends BaseActivity implements OnItemClickListene
 
 	@Override
 	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-		String location = (String)listView.getAdapter().getItem(arg2);
+		Cursor o = (Cursor) listView.getAdapter().getItem(arg2);
+	    String location = o.getString(1);
 		Intent intent = new Intent(this, EventActivity.class);
 		intent.putExtra(EventActivity.DAY, day);
 		intent.putExtra(EventActivity.LOCATION, location);

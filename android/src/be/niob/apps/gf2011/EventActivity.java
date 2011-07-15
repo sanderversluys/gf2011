@@ -37,7 +37,7 @@ public class EventActivity extends BaseActivity implements OnItemClickListener {
 		if (getExtras()) {
 			
 			listView = (ListView) findViewById(android.R.id.list);
-			Cursor cursor = getContentResolver().query(Events.CONTENT_URI, new String[] {Events._ID, Events.EVENT_TITLE, Events.EVENT_DESCRIPTION}, null, null, null);
+			Cursor cursor = getContentResolver().query(Events.buildEventsOn(day, location), new String[] {Events._ID, Events.EVENT_TITLE, Events.EVENT_DESCRIPTION}, null, null, null);
 			startManagingCursor(cursor);
 			
 			String[] columns = new String[] { Events.EVENT_TITLE, Events.EVENT_DESCRIPTION };
