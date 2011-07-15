@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<style name="Theme" parent="android:style/Theme">
+
+		<item name="android:windowBackground">@color/green</item>
+
+		<!-- <item name="android:buttonStyle">@style/Button</item>
+ -->
+		<item name="android:textColorPrimary">@color/dark</item>
+		<item name="android:textColorSecondary">@color/darkgreen</item>
+
+		<item name="android:listViewStyle">@style/Widget.ListView</item>
+		
+		<item name="android:textAppearanceLarge">@style/TextAppearance.Large</item>
+        <item name="android:textAppearanceMedium">@style/TextAppearance.Medium</item>
+		<item name="android:textAppearanceSmall">@style/TextAppearance.Small</item>
+		
+<!-- 		<item name="android:listSeparatorTextViewStyle">@style/Widget.TextView.ListSeparator</item> -->
+		
+		<!-- <item name="android:listSeparatorTextViewStyle">@style/Widget.TextView.ListSeparator</item> -->
+		
+		<!-- <item name="android:listDivider">@drawable/divider_horizontal_dim_dark</item>-->
+
+		<!-- <item name="textColorPrimary">@color/text_light</item> <item name="textColorSecondary">@color/text_light</item> 
+			<item name="textColorTertiary">@android:color/tertiary_text_dark</item> <item 
+			name="textColorPrimaryInverse">@android:color/primary_text_light</item> <item 
+			name="textColorSecondaryInverse">@android:color/secondary_text_light</item> 
+			<item name="textColorTertiaryInverse">@android:color/tertiary_text_light</item> 
+			<item name="textColorPrimaryDisableOnly">@android:color/primary_text_dark_disable_only</item> 
+			<item name="textColorPrimaryNoDisable">@android:color/primary_text_dark_nodisable</item> 
+			<item name="textColorSecondaryNoDisable">@android:color/secondary_text_dark_nodisable</item> 
+			<item name="textColorPrimaryInverseNoDisable">@android:color/primary_text_light_nodisable</item> 
+			<item name="textColorSecondaryInverseNoDisable">@android:color/secondary_text_light_nodisable</item> 
+			<item name="textColorHint">@android:color/hint_foreground_dark</item> <item 
+			name="textColorHintInverse">@android:color/hint_foreground_light</item>
+
+		 <item name="android:listSelector">@drawable/list_item</item> <item 
+			name="android:cacheColorHint">@color/back_light</item>
+
+		<item name="android:listSeparatorTextViewStyle">@style/Widget.TextView.ListSeparator</item>
+	
+	 
+	 <style name="Preference.Category">
+          <item name="android:layout">@android:layout/preference_category</item>
+          <item name="android:shouldDisableView">false</item>
+          <item name="android:selectable">false</item>
+      </style> -->
+
+	</style>
+</resources>
