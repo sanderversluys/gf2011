@@ -9,6 +9,7 @@ import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import be.niob.apps.gf2011.provider.EventContract;
 import be.niob.apps.gf2011.provider.EventContract.Events;
+import be.niob.apps.gf2011.util.EventUtil;
 
 public class EventActivity extends BaseActivity implements OnItemClickListener {
 
@@ -35,6 +36,8 @@ public class EventActivity extends BaseActivity implements OnItemClickListener {
 		super.onCreate(savedInstanceState);
 		
 		if (getExtras()) {
+			
+			actionBar.setTitle(EventUtil.splitLocation(location)[0]);
 			
 			listView = (ListView) findViewById(android.R.id.list);
 			Cursor cursor = getContentResolver().query(Events.buildEventsOn(day, location), new String[] {Events._ID, Events.EVENT_TITLE, Events.EVENT_DESCRIPTION}, null, null, null);
