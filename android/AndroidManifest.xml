@@ -20,6 +20,9 @@
         
         <activity android:name=".EventActivity"
         	android:label="@string/app_name"/>
+        	
+        <activity android:name=".DaysActivity"
+        	android:label="@string/app_name"/>
 	
 	    <provider
             android:name=".provider.EventProvider"

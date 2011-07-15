@@ -28,8 +28,7 @@ public class EventProvider extends ContentProvider {
 	private static final int EVENTS = 100;
 	private static final int EVENTS_ID = 101;
     private static final int EVENTS_BETWEEN = 102;
-    
-    private static final int DATES = 200;
+    private static final int EVENTS_ON = 103;
     
     private static final int LOCATIONS = 300;
     
@@ -38,8 +37,9 @@ public class EventProvider extends ContentProvider {
         final String authority = EventContract.CONTENT_AUTHORITY;
 
         matcher.addURI(authority, "events", EVENTS);
-        matcher.addURI(authority, "blocks/*", EVENTS_ID);
-        matcher.addURI(authority, "blocks/between/*/*", EVENTS_BETWEEN);
+        matcher.addURI(authority, "events/on/*", EVENTS_ON);
+        matcher.addURI(authority, "events/between/*/*", EVENTS_BETWEEN);
+        matcher.addURI(authority, "events/*", EVENTS_ID);
         
         return matcher;
     }
@@ -68,6 +68,8 @@ public class EventProvider extends ContentProvider {
                 return Events.CONTENT_ITEM_TYPE;
             case EVENTS_BETWEEN:
                 return Events.CONTENT_TYPE;
+            case EVENTS_ON:
+            	return Events.CONTENT_TYPE;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
@@ -114,7 +116,7 @@ public class EventProvider extends ContentProvider {
             }
             case EVENTS_ID: {
                 return builder.table(Tables.EVENTS)
-                        .where(Events._ID + "=?", uri.getPathSegments().get(0));
+                        .where(Events._ID + "=?", uri.getPathSegments().get(1));
             }
             case EVENTS_BETWEEN: {
                 final List<String> segments = uri.getPathSegments();
@@ -123,6 +125,10 @@ public class EventProvider extends ContentProvider {
                 return builder.table(Tables.EVENTS)
                         .where(Events.EVENT_BEGIN + ">=?", startTime)
                         .where(Events.EVENT_END + "<=?", endTime);
+            }
+            case EVENTS_ON: {
+            	return builder.table(Tables.EVENTS)
+                .where(Events.EVENT_DATE + "=?", uri.getPathSegments().get(2));
             }
             default: {
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
