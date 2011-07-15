@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="hello">Hello World, GensteFeesten2011Activity!</string>
+    <string name="app_name">Gentse Feesten 2011</string>
+    <string name="empty">Niets gevonden</string>
+</resources>
