@@ -26,11 +26,12 @@ public abstract class BaseActivity extends Activity {
 		
 	}
 	
-	public void initActionBar() {
+	public void initActionBar() { 
     	actionBar = (ActionBar) findViewById(R.id.actionbar);
     	if (actionBar != null) {
 	    	actionBar.setTitle(R.string.app_name);
 	    	actionBar.setHomeAction(new IntentAction(this, new Intent(this, HomeActivity.class), R.drawable.ic_title_home));
+	    	actionBar.addAction(new IntentAction(this, new Intent(this, DaysActivity.class), R.drawable.ic_title_today));
 	    	actionBar.addAction(new IntentAction(this, new Intent(this, DaysActivity.class), R.drawable.ic_title_search));
 	    	//actionBar.addAction(new ToastAction());
     	}
