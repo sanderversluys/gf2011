@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import be.niob.apps.gf2011.util.Dates;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -38,17 +40,8 @@ public class DaysActivity extends BaseActivity implements OnItemClickListener {
 		
 		List<String> days = new ArrayList<String>();
 		
-		SimpleDateFormat parser = new SimpleDateFormat("dd/MM/yyyy");
-		SimpleDateFormat formatter = new SimpleDateFormat("EEEE dd MMMM"); 
-
-		Date date = null;
-		for (String ds : dates) {
-			try {
-				date = parser.parse(ds);
-				days.add(formatter.format(date));
-			} catch (ParseException e) {
-				e.printStackTrace();
-			}
+		for (String date : dates) {
+			days.add(Dates.parseFormat(date));
 		}
 		
 		listView = (ListView) findViewById(android.R.id.list);

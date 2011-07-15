@@ -51,7 +51,7 @@ public class LocationActivity extends BaseActivity implements OnItemClickListene
 	@Override
 	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
 		Cursor o = (Cursor) listView.getAdapter().getItem(arg2);
-	    String location = o.getString(1);
+	    String location = o.getString(0);
 		Intent intent = new Intent(this, EventActivity.class);
 		intent.putExtra(EventActivity.DAY, day);
 		intent.putExtra(EventActivity.LOCATION, location);

@@ -144,7 +144,7 @@ public class EventProvider extends ContentProvider {
             	String location = uri.getPathSegments().get(4);
             	return builder.table(Tables.EVENTS)
                 		.where(Events.EVENT_DATE + "=?", date)
-                		.where(Events.EVENT_LOCATION + "+?", location);
+                		.where(Events.EVENT_LOCATION + "=?", location);
             }
             default: {
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
