@@ -10,6 +10,8 @@ import com.markupartist.android.widget.ActionBar.IntentAction;
 public abstract class BaseActivity extends Activity {
 	
 	protected int layoutId = R.layout.activity_list;
+	
+	protected ActionBar actionBar;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -25,7 +27,7 @@ public abstract class BaseActivity extends Activity {
 	}
 	
 	public void initActionBar() {
-    	ActionBar actionBar = (ActionBar) findViewById(R.id.actionbar);
+    	actionBar = (ActionBar) findViewById(R.id.actionbar);
     	if (actionBar != null) {
 	    	actionBar.setTitle(R.string.app_name);
 	    	actionBar.setHomeAction(new IntentAction(this, new Intent(this, HomeActivity.class), R.drawable.ic_title_home));

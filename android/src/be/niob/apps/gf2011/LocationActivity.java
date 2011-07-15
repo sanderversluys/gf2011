@@ -11,6 +11,7 @@ import android.widget.SimpleCursorAdapter;
 import be.niob.apps.gf2011.provider.EventContract;
 import be.niob.apps.gf2011.provider.EventContract.Events;
 import be.niob.apps.gf2011.provider.EventContract.Locations;
+import be.niob.apps.gf2011.util.Dates;
 
 public class LocationActivity extends BaseActivity implements OnItemClickListener {
 
@@ -27,6 +28,8 @@ public class LocationActivity extends BaseActivity implements OnItemClickListene
 		if (extras != null && extras.containsKey(DAY)) {
 			
 			day = extras.getString(DAY);
+			
+			actionBar.setTitle(Dates.parseFormat(day));
 			
 			Cursor cursor = getContentResolver().query(Locations.buildLocationsOnDayUri(day), EventContract.LOCATION_PROJECTION, null, null, null);
 			startManagingCursor(cursor);

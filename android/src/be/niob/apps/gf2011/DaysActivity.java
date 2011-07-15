@@ -1,12 +1,7 @@
 package be.niob.apps.gf2011;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-
-import be.niob.apps.gf2011.util.Dates;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,6 +11,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import be.niob.apps.gf2011.util.Dates;
 
 public class DaysActivity extends BaseActivity implements OnItemClickListener {
 
@@ -39,7 +35,6 @@ public class DaysActivity extends BaseActivity implements OnItemClickListener {
 		super.onCreate(savedInstanceState);
 		
 		List<String> days = new ArrayList<String>();
-		
 		for (String date : dates) {
 			days.add(Dates.parseFormat(date));
 		}
