@@ -9,15 +9,14 @@ import com.markupartist.android.widget.ActionBar.IntentAction;
 
 public abstract class BaseActivity extends Activity {
 	
-	protected int layoutId = R.layout.activity_list;
-	
 	protected ActionBar actionBar;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(layoutId);
+		setContentView(getLayoutId());
 		initActionBar();
+		findAndSetupViews();
 	}
 	
 	protected abstract int getLayoutId();

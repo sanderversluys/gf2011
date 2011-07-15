@@ -27,8 +27,6 @@
         <activity android:name=".EventActivity"
         	android:label="@string/app_name"/>
         	
-        
-	
 	    <provider
             android:name=".provider.EventProvider"
             android:authorities="be.niob.apps.gf2011"/>
