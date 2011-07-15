@@ -14,7 +14,11 @@ public class EventActivity extends BaseActivity implements OnItemClickListener {
 
 	private ListView listView;
 	
-	public static String ACTION_SHOW_DAY ="showDay";
+	public static String DAY ="day";
+	public static String LOCATION = "location";
+	
+	private String day;
+	private String location;
 	
 	/*
 	 Cursor cursor = getContentResolver().query(Events.buildEventsOnDayUri("17/07/2011"), EventContract.SMALL_PROJECTION, null, null, null);
@@ -30,17 +34,32 @@ public class EventActivity extends BaseActivity implements OnItemClickListener {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		listView = (ListView) findViewById(android.R.id.list);
+		if (getExtras()) {
+			
+			listView = (ListView) findViewById(android.R.id.list);
+			Cursor cursor = getContentResolver().query(Events.CONTENT_URI, new String[] {Events._ID, Events.EVENT_TITLE, Events.EVENT_DESCRIPTION}, null, null, null);
+			startManagingCursor(cursor);
+			
+			String[] columns = new String[] { Events.EVENT_TITLE, Events.EVENT_DESCRIPTION };
+			int[] to = new int[] { android.R.id.text1, android.R.id.text2 };
+			
+			SimpleCursorAdapter mAdapter = new SimpleCursorAdapter(this, android.R.layout.simple_list_item_2, cursor, columns, to);
+			listView.setAdapter(mAdapter);
+			listView.setOnItemClickListener(this);
+		}
 		
-		Cursor cursor = getContentResolver().query(Events.CONTENT_URI, new String[] {Events._ID, Events.EVENT_TITLE, Events.EVENT_DESCRIPTION}, null, null, null);
-		startManagingCursor(cursor);
-		
-		String[] columns = new String[] { Events.EVENT_TITLE, Events.EVENT_DESCRIPTION };
-		int[] to = new int[] { android.R.id.text1, android.R.id.text2 };
-		
-		SimpleCursorAdapter mAdapter = new SimpleCursorAdapter(this, android.R.layout.simple_list_item_2, cursor, columns, to);
-		listView.setAdapter(mAdapter);
-		listView.setOnItemClickListener(this);
+	}
+	
+	private boolean getExtras() {
+		Bundle extras = getIntent().getExtras();
+		if (extras != null) {
+			if (extras.containsKey(DAY))
+				day = extras.getString(DAY);
+			if (extras.containsKey(LOCATION))
+				location = extras.getString(LOCATION);
+			return true;
+		}
+		return false;
 	}
 
 	@Override

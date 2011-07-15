@@ -65,8 +65,8 @@ public class DaysActivity extends BaseActivity implements OnItemClickListener {
 	@Override
 	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
 		String date = dates[arg2];
-		Intent intent = new Intent(this, EventActivity.class);
-		intent.putExtra(EventActivity.ACTION_SHOW_DAY, date);
+		Intent intent = new Intent(this, LocationActivity.class);
+		intent.putExtra(LocationActivity.DAY, date);
 		startActivity(intent);
 	}
 	

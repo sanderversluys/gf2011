@@ -30,7 +30,7 @@ public class EventProvider extends ContentProvider {
     private static final int EVENTS_BETWEEN = 102;
     private static final int EVENTS_ON = 103;
     
-    private static final int LOCATIONS = 300;
+    private static final int LOCATIONS_ON_DAY = 300;
     
     private static UriMatcher buildUriMatcher() {
         final UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
@@ -40,6 +40,8 @@ public class EventProvider extends ContentProvider {
         matcher.addURI(authority, "events/on/*", EVENTS_ON);
         matcher.addURI(authority, "events/between/*/*", EVENTS_BETWEEN);
         matcher.addURI(authority, "events/*", EVENTS_ID);
+        
+        matcher.addURI(authority, "locations/day/*", LOCATIONS_ON_DAY);
         
         return matcher;
     }
@@ -83,6 +85,9 @@ public class EventProvider extends ContentProvider {
 
         final int match = sUriMatcher.match(uri);
         switch (match) {
+	        case LOCATIONS_ON_DAY: {
+	        	return db.rawQuery("select distinct(location), (select -1) as _id from events", selectionArgs);
+	        }
 	        default: {
 	            // Most cases are handled with simple SelectionBuilder
 	            final SelectionBuilder builder = buildSelection(uri, match);
