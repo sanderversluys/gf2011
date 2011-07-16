@@ -95,7 +95,7 @@ public class EventProvider extends ContentProvider {
 	        	return db.rawQuery("select distinct(location), (select -1) as _id from events", selectionArgs);
 	        } 
 	        case LOCATIONS_ON_DAY: {
-	        	return db.rawQuery("select distinct(location), (select -1) as _id from events where date = " + uri.getPathSegments().get(4), selectionArgs);
+	        	return db.rawQuery("select distinct(location), (select -1) as _id from events where date = '" + uri.getPathSegments().get(2)+"'", selectionArgs);
 	        }
 	        default: {
 	            // Most cases are handled with simple SelectionBuilder
