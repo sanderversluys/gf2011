@@ -15,7 +15,7 @@ public class HomeActivity extends BaseActivity implements OnClickListener {
 	protected int getLayoutId() {
 		return R.layout.activity_home;
 	}
-    
+    /*
     @Override
     protected void findAndSetupViews() {
     	super.findAndSetupViews();
@@ -35,6 +35,12 @@ public class HomeActivity extends BaseActivity implements OnClickListener {
 				
 			}
 		}
+	}*/
+
+	@Override
+	public void onClick(View arg0) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }

@@ -10,19 +10,38 @@
 	    title="@string/app_name"
 	    style="@style/ActionBar"
 	    />
-     
-    <Button
-    	android:id="@+id/days"
-    	android:layout_width="wrap_content"
-     	android:layout_height="wrap_content"
-     	android:text="Per dag"
-    	/>
-    
-    <Button
-    	android:id="@+id/locations"
-    	android:layout_width="wrap_content"
-     	android:layout_height="wrap_content"
-     	android:text="Per locatie"
-    	/>
+	    
+	    
+	<be.niob.apps.gf2011.widget.DashboardLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+
+	    <Button android:id="@+id/home_btn_day"
+	    	android:layout_width="wrap_content"
+	    	android:layout_height="wrap_content"
+	        android:text="per dag"
+	        android:drawableTop="@drawable/ic_day"
+	        style="@style/DashboardButton"/>
+	    <Button android:id="@+id/home_btn_location"
+	    	android:layout_width="wrap_content"
+	    	android:layout_height="wrap_content"
+	        android:text="per locatie"
+	        android:drawableTop="@drawable/ic_location"
+	        style="@style/DashboardButton"/>
+	    <Button android:id="@+id/home_btn_starred"
+		    android:layout_width="wrap_content"
+	    	android:layout_height="wrap_content"
+	        android:text="met ster"
+	        android:drawableTop="@drawable/ic_starred"
+	        style="@style/DashboardButton"/>
+	    <Button android:id="@+id/home_btn_now"
+	    	android:layout_width="wrap_content"
+	    	android:layout_height="wrap_content"
+	        android:text="nu bezig"
+	        android:drawableTop="@drawable/ic_now"
+	        style="@style/DashboardButton"/>
+
+	</be.niob.apps.gf2011.widget.DashboardLayout>
     
  </LinearLayout>
