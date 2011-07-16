@@ -1,12 +1,9 @@
 package be.niob.apps.gf2011;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -16,7 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.CheckedTextView;
 import android.widget.CursorAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -53,7 +49,7 @@ public class LocationActivity extends BaseActivity implements OnItemClickListene
 			Cursor cursor = null;
 			
 			if (isChoosingFavs) {
-				loadFavs();
+				favLocations = EventUtil.loadFavs(this);
 				actionBar.setTitle(R.string.choose_locations);
 				cursor = getContentResolver().query(Locations.CONTENT_URI, EventContract.LOCATION_PROJECTION, null, null, null);
 			} else {
@@ -136,7 +132,7 @@ public class LocationActivity extends BaseActivity implements OnItemClickListene
 	    		favLocations.remove(location);
 	    	else
 	    		favLocations.add(location);
-	    	saveFavs();
+	    	EventUtil.saveFavs(this, favLocations);
 	    } else {
 	    	Intent intent = new Intent(this, EventActivity.class);
 			intent.putExtra(EventActivity.DAY, day);
@@ -148,29 +144,6 @@ public class LocationActivity extends BaseActivity implements OnItemClickListene
 		
 	}
 
-	private void loadFavs() {
-		String key = EventContract.Locations.PREFERENCES_KEY;
-		SharedPreferences prefs = getSharedPreferences(key, Context.MODE_PRIVATE);
-		String locString = prefs.getString(key, "");
-		if (!locString.equals("")) {
-			String[] locs = locString.split("\\|\\|\\|");
-			favLocations = new ArrayList<String>(Arrays.asList(locs));
-		} else
-			favLocations = new ArrayList<String>();
-	}
 	
-	private void saveFavs() {
-		String key = EventContract.Locations.PREFERENCES_KEY;
-		SharedPreferences prefs = getSharedPreferences(key, Context.MODE_PRIVATE);
-		SharedPreferences.Editor editor = prefs.edit();
-		StringBuffer buffer = new StringBuffer();
-		int size = favLocations.size();
-		for (int i=0; i<size; i++) {
-			buffer.append(favLocations.get(i));
-			if (i < size-1) buffer.append("|||");
-		}
-		editor.putString(key, buffer.toString());
-		editor.commit();
-	}
 	
 }
