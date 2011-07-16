@@ -45,7 +45,7 @@ public class EventActivity extends BaseActivity implements OnItemClickListener {
 			actionBar.setTitle(EventUtil.splitLocation(location)[0]);
 			
 			listView = (ListView) findViewById(android.R.id.list);
-			Cursor cursor = getContentResolver().query(Events.buildEventsOn(day, location), EventContract.RICH_PROJECTION, null, null, null);
+			Cursor cursor = getContentResolver().query(Events.buildEventsOn(day, location), EventContract.RICH_PROJECTION, null, null, Events.EVENT_BEGIN);
 			startManagingCursor(cursor);
 			ListAdapter adapter = new EventAdapter(this, cursor);
 			listView.setAdapter(adapter);
@@ -60,12 +60,14 @@ public class EventActivity extends BaseActivity implements OnItemClickListener {
 		private int titleIndex;
 		private int descriptionIndex;
 		private int beginIndex;
+		private int endIndex;
 		
 		public EventAdapter(Context context, Cursor c) {
 			super(context, c);
 			titleIndex = c.getColumnIndex(Events.EVENT_TITLE);
 			descriptionIndex = c.getColumnIndex(Events.EVENT_DESCRIPTION);
 			beginIndex = c.getColumnIndex(Events.EVENT_BEGIN);
+			endIndex = c.getColumnIndex(Events.EVENT_END);
 			mInflater = LayoutInflater.from(context);
 		}
 
@@ -78,7 +80,7 @@ public class EventActivity extends BaseActivity implements OnItemClickListener {
             
             String title = cursor.getString(titleIndex);
             String description = cursor.getString(descriptionIndex);
-            String time = cursor.getString(beginIndex);
+            String time = cursor.getString(beginIndex) + " - " + cursor.getString(endIndex);
             
             titleView.setText(title);
             descriptionView.setText(description);

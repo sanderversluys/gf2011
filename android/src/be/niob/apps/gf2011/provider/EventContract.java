@@ -58,6 +58,8 @@ public class EventContract {
 	
 	public static class Locations {
 		
+		public static final String PREFERENCES_KEY = "LocationsPrefs";
+		
 		public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon()
 		.appendPath(PATH_LOCATIONS).build();
 		

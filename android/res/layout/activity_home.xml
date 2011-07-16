@@ -24,7 +24,7 @@
 	    <Button android:id="@+id/home_btn_location"
 	    	android:layout_width="wrap_content"
 	    	android:layout_height="wrap_content"
-	        android:text="per locatie"
+	        android:text="kies locaties"
 	        android:drawableTop="@drawable/ic_location"
 	        style="@style/DashboardButton"/>
 	    <Button android:id="@+id/home_btn_starred"

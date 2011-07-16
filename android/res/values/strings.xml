@@ -4,4 +4,6 @@
     <string name="app_name">Gentse Feesten 2011</string>
     <string name="empty">Niets gevonden</string>
     <string name="actionbar_activity_not_found">Failed to open intent...</string>
+    <string name="per_day">Per dag</string>
+    <string name="choose_locations">Kies locaties</string>
 </resources>

@@ -38,7 +38,9 @@ public class HomeActivity extends BaseActivity implements OnClickListener {
 				startActivity(new Intent(this, DaysActivity.class));
 				break;
 			case R.id.home_btn_location:
-				startActivity(new Intent(this, LocationActivity.class));
+				Intent intent = new Intent(this, LocationActivity.class);
+				intent.putExtra(LocationActivity.ACTION_CHOOSE_FAVS, true);
+				startActivity(intent);
 				break;
 			case R.id.home_btn_starred:
 				// TODO go to starred activity

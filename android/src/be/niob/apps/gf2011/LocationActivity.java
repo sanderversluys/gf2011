@@ -1,14 +1,22 @@
 package be.niob.apps.gf2011;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.CheckedTextView;
 import android.widget.CursorAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -23,27 +31,46 @@ public class LocationActivity extends BaseActivity implements OnItemClickListene
 
 	public static final String DAY = "day";
 	
+	public static final String ACTION_CHOOSE_FAVS = "chooseFavs";
+	private boolean isChoosingFavs = false;
+	private List<String> favLocations;
+	
 	private String day;
 	
 	private ListView listView;
+	
+	
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		Bundle extras = getIntent().getExtras();
-		if (extras != null && extras.containsKey(DAY)) {
+		
+		if (extras != null && (extras.containsKey(DAY) || extras.containsKey(ACTION_CHOOSE_FAVS))) {
 			
-			day = extras.getString(DAY);
+			isChoosingFavs = extras.containsKey(ACTION_CHOOSE_FAVS);
 			
-			actionBar.setTitle(Dates.parseFormat(day));
+			Cursor cursor = null;
 			
-			Cursor cursor = getContentResolver().query(Locations.buildLocationsOnDayUri(day), EventContract.LOCATION_PROJECTION, null, null, null);
+			if (isChoosingFavs) {
+				loadFavs();
+				actionBar.setTitle(R.string.choose_locations);
+				cursor = getContentResolver().query(Locations.CONTENT_URI, EventContract.LOCATION_PROJECTION, null, null, null);
+			} else {
+				day = extras.getString(DAY);
+				actionBar.setTitle(Dates.parseFormat(day));
+				cursor = getContentResolver().query(Locations.buildLocationsOnDayUri(day), EventContract.LOCATION_PROJECTION, null, null, null);
+			}
+			
 			startManagingCursor(cursor);
 			
-			ListAdapter adapter = new LocationAdapter(this, cursor);
+			int layoutId = isChoosingFavs ? android.R.layout.simple_list_item_2 : android.R.layout.simple_list_item_2;
+			
+			ListAdapter adapter = new LocationAdapter(this, cursor, layoutId);
 			listView = (ListView) findViewById(android.R.id.list);
 			listView.setAdapter(adapter);
 			listView.setOnItemClickListener(this);
+			listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
 			
 		} else
 			finish();
@@ -53,11 +80,16 @@ public class LocationActivity extends BaseActivity implements OnItemClickListene
 
 		private LayoutInflater mInflater;
 		private int locationIndex;
+		private int layoutId;
 		
-		public LocationAdapter(Context context, Cursor c) {
+		private int green;
+		
+		public LocationAdapter(Context context, Cursor c, int layoutId) {
 			super(context, c);
 			locationIndex = c.getColumnIndex(Events.EVENT_LOCATION);
 			mInflater = LayoutInflater.from(context);
+			this.layoutId = layoutId;
+			green = context.getResources().getColor(R.color.green);
 		}
 
 		@Override
@@ -70,7 +102,12 @@ public class LocationActivity extends BaseActivity implements OnItemClickListene
             String[] parts = EventUtil.splitLocation(location);
             
             text1.setText(parts[0]);
-            text2.setText(parts[1]);
+            
+            if (isChoosingFavs) {
+            	view.setBackgroundColor(favLocations.contains(location) ? Color.WHITE : green);
+            }
+            
+            if (text2 != null) text2.setText(parts[1]);
             
             view.setTag(location);
 
@@ -78,7 +115,7 @@ public class LocationActivity extends BaseActivity implements OnItemClickListene
 
 		@Override
 		public View newView(Context context, Cursor cursor, ViewGroup parent) {
-			return mInflater.inflate(android.R.layout.simple_list_item_2, null);
+			return mInflater.inflate(layoutId, null);
 		}
 
 	}
@@ -93,10 +130,47 @@ public class LocationActivity extends BaseActivity implements OnItemClickListene
 	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
 		Cursor o = (Cursor) listView.getAdapter().getItem(arg2);
 	    String location = o.getString(0);
-		Intent intent = new Intent(this, EventActivity.class);
-		intent.putExtra(EventActivity.DAY, day);
-		intent.putExtra(EventActivity.LOCATION, location);
-		startActivity(intent);
+	    
+	    if (isChoosingFavs) {
+	    	if (favLocations.contains(location))
+	    		favLocations.remove(location);
+	    	else
+	    		favLocations.add(location);
+	    	saveFavs();
+	    } else {
+	    	Intent intent = new Intent(this, EventActivity.class);
+			intent.putExtra(EventActivity.DAY, day);
+			intent.putExtra(EventActivity.LOCATION, location);
+			startActivity(intent);
+	    }
+		
+		Log.d("boe", "check count: " + listView.getCheckedItemPositions().size());
+		
 	}
 
+	private void loadFavs() {
+		String key = EventContract.Locations.PREFERENCES_KEY;
+		SharedPreferences prefs = getSharedPreferences(key, Context.MODE_PRIVATE);
+		String locString = prefs.getString(key, "");
+		if (!locString.equals("")) {
+			String[] locs = locString.split("\\|\\|\\|");
+			favLocations = new ArrayList<String>(Arrays.asList(locs));
+		} else
+			favLocations = new ArrayList<String>();
+	}
+	
+	private void saveFavs() {
+		String key = EventContract.Locations.PREFERENCES_KEY;
+		SharedPreferences prefs = getSharedPreferences(key, Context.MODE_PRIVATE);
+		SharedPreferences.Editor editor = prefs.edit();
+		StringBuffer buffer = new StringBuffer();
+		int size = favLocations.size();
+		for (int i=0; i<size; i++) {
+			buffer.append(favLocations.get(i));
+			if (i < size-1) buffer.append("|||");
+		}
+		editor.putString(key, buffer.toString());
+		editor.commit();
+	}
+	
 }
