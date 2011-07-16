@@ -8,39 +8,45 @@ import android.widget.Button;
 
 public class HomeActivity extends BaseActivity implements OnClickListener {
 	
-	private Button btDays;
-	private Button btLocations;
+	private Button btDay;
+	private Button btLocation;
+	private Button btStarred;
+	private Button btNow;
   
     @Override
 	protected int getLayoutId() {
 		return R.layout.activity_home;
 	}
-    /*
+    
     @Override
     protected void findAndSetupViews() {
     	super.findAndSetupViews();
-    	btDays = (Button) findViewById(R.id.days);
-    	btDays.setOnClickListener(this);
-    	btLocations = (Button) findViewById(R.id.locations);
-    	btLocations.setOnClickListener(this);
+    	btDay = (Button) findViewById(R.id.home_btn_day);
+    	btDay.setOnClickListener(this);
+    	btLocation = (Button) findViewById(R.id.home_btn_location);
+    	btLocation.setOnClickListener(this);
+    	btStarred = (Button) findViewById(R.id.home_btn_starred);
+    	btStarred.setOnClickListener(this);
+    	btNow = (Button) findViewById(R.id.home_btn_now);
+    	btNow.setOnClickListener(this);
     }
 
 	@Override
 	public void onClick(View v) {
 		switch(v.getId()) {
-			case R.id.days: {
-				startActivity(new Intent(this, EventActivity.class));
-			}
-			case R.id.locations: {
-				
-			}
+			case R.id.home_btn_day:
+				startActivity(new Intent(this, DaysActivity.class));
+				break;
+			case R.id.home_btn_location:
+				startActivity(new Intent(this, LocationActivity.class));
+				break;
+			case R.id.home_btn_starred:
+				// TODO go to starred activity
+				break;
+			case R.id.home_btn_now:
+				// TODO go to now activity
+				break;
 		}
-	}*/
-
-	@Override
-	public void onClick(View arg0) {
-		// TODO Auto-generated method stub
-		
 	}
 	
 }
