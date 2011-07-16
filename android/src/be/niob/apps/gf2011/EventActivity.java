@@ -1,12 +1,17 @@
 package be.niob.apps.gf2011;
 
+import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.CursorAdapter;
+import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.SimpleCursorAdapter;
+import android.widget.TextView;
 import be.niob.apps.gf2011.provider.EventContract;
 import be.niob.apps.gf2011.provider.EventContract.Events;
 import be.niob.apps.gf2011.util.EventUtil;
@@ -40,17 +45,51 @@ public class EventActivity extends BaseActivity implements OnItemClickListener {
 			actionBar.setTitle(EventUtil.splitLocation(location)[0]);
 			
 			listView = (ListView) findViewById(android.R.id.list);
-			Cursor cursor = getContentResolver().query(Events.buildEventsOn(day, location), new String[] {Events._ID, Events.EVENT_TITLE, Events.EVENT_DESCRIPTION}, null, null, null);
+			Cursor cursor = getContentResolver().query(Events.buildEventsOn(day, location), EventContract.RICH_PROJECTION, null, null, null);
 			startManagingCursor(cursor);
-			
-			String[] columns = new String[] { Events.EVENT_TITLE, Events.EVENT_DESCRIPTION };
-			int[] to = new int[] { android.R.id.text1, android.R.id.text2 };
-			
-			SimpleCursorAdapter mAdapter = new SimpleCursorAdapter(this, android.R.layout.simple_list_item_2, cursor, columns, to);
-			listView.setAdapter(mAdapter);
+			ListAdapter adapter = new EventAdapter(this, cursor);
+			listView.setAdapter(adapter);
 			listView.setOnItemClickListener(this);
 		}
 		
+	}
+	
+	protected class EventAdapter extends CursorAdapter {
+
+		private LayoutInflater mInflater;
+		private int titleIndex;
+		private int descriptionIndex;
+		private int beginIndex;
+		
+		public EventAdapter(Context context, Cursor c) {
+			super(context, c);
+			titleIndex = c.getColumnIndex(Events.EVENT_TITLE);
+			descriptionIndex = c.getColumnIndex(Events.EVENT_DESCRIPTION);
+			beginIndex = c.getColumnIndex(Events.EVENT_BEGIN);
+			mInflater = LayoutInflater.from(context);
+		}
+
+		@Override
+		public void bindView(View view, Context context, Cursor cursor) {
+			
+			final TextView titleView = (TextView) view.findViewById(R.id.title);
+            final TextView descriptionView = (TextView) view.findViewById(R.id.description);
+            final TextView timeView = (TextView) view.findViewById(R.id.time);
+            
+            String title = cursor.getString(titleIndex);
+            String description = cursor.getString(descriptionIndex);
+            String time = cursor.getString(beginIndex);
+            
+            titleView.setText(title);
+            descriptionView.setText(description);
+            timeView.setText(time);
+		}
+
+		@Override
+		public View newView(Context context, Cursor cursor, ViewGroup parent) {
+			return mInflater.inflate(R.layout.list_item_event, null);
+		}
+
 	}
 	
 	private boolean getExtras() {

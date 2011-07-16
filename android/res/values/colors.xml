@@ -4,6 +4,7 @@
     <color name="darkgreen">#ff3e694c</color>
     <color name="green">#ffdee0cb</color>
     <color name="lightgreen">#fff9faf6</color>
+    <color name="grey">#ffdddddd</color>
     <!--
     <color name="actionbar_separator">#8B1A1A</color>
     <color name="actionbar_title">#FFFFFF</color>

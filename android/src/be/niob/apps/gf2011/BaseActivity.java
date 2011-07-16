@@ -30,7 +30,7 @@ public abstract class BaseActivity extends Activity {
     	if (actionBar != null) {
 	    	actionBar.setTitle(R.string.app_name);
 	    	actionBar.setHomeAction(new IntentAction(this, new Intent(this, HomeActivity.class), R.drawable.ic_title_home));
-	    	actionBar.addAction(new IntentAction(this, new Intent(this, DaysActivity.class), R.drawable.ic_title_today));
+	    	//actionBar.addAction(new IntentAction(this, new Intent(this, DaysActivity.class), R.drawable.ic_title_today));
 	    	actionBar.addAction(new IntentAction(this, new Intent(this, DaysActivity.class), R.drawable.ic_title_search));
 	    	//actionBar.addAction(new ToastAction());
     	}

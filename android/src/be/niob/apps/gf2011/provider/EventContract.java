@@ -80,6 +80,18 @@ public class EventContract {
 		Events.EVENT_DESCRIPTION
 	};
 	
+	public static final String[] RICH_PROJECTION = new String[] {
+		Events._ID,
+		Events.EVENT_TITLE,
+		Events.EVENT_DESCRIPTION,
+		Events.EVENT_DATE,
+		Events.EVENT_LOCATION,
+		Events.EVENT_BEGIN,
+		Events.EVENT_END,
+		Events.EVENT_INDOOR,
+		Events.EVENT_PARTICIPANTS
+	};
+	
 	/*
 	public static class Days {
 		
