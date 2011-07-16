@@ -14,6 +14,7 @@ import android.net.Uri;
 import android.util.Log;
 import be.niob.apps.gf2011.provider.DatabaseHelper.Tables;
 import be.niob.apps.gf2011.provider.EventContract.Events;
+import be.niob.apps.gf2011.util.EventUtil;
 import be.niob.apps.gf2011.util.SelectionBuilder;
 
 public class EventProvider extends ContentProvider {
@@ -95,7 +96,21 @@ public class EventProvider extends ContentProvider {
 	        	return db.rawQuery("select distinct(location), (select -1) as _id from events", selectionArgs);
 	        } 
 	        case LOCATIONS_ON_DAY: {
-	        	return db.rawQuery("select distinct(location), (select -1) as _id from events where date = '" + uri.getPathSegments().get(2)+"'", selectionArgs);
+	        	
+	        	String sql = "select distinct(location), (select -1) as _id from events where date = '" + uri.getPathSegments().get(2) + "'";
+	        	
+	        	List<String> favs = EventUtil.loadFavs(getContext());
+	        	StringBuffer filter = new StringBuffer();
+	        	if (favs.size() > 0) {
+		        	filter.append(" AND (");
+		        	int size = favs.size();
+		        	for (int i=0; i<size; i++) {
+		        		filter.append("location = '" + favs.get(i) + "'");
+		        		if (i<size-1) filter.append(" OR ");
+		        	}
+		        	filter.append(")");
+	        	}
+	        	return db.rawQuery(sql + filter, selectionArgs);
 	        }
 	        default: {
 	            // Most cases are handled with simple SelectionBuilder
