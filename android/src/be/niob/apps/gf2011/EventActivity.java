@@ -1,7 +1,9 @@
 package be.niob.apps.gf2011;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +17,8 @@ import android.widget.TextView;
 import be.niob.apps.gf2011.provider.EventContract;
 import be.niob.apps.gf2011.provider.EventContract.Events;
 import be.niob.apps.gf2011.util.EventUtil;
+
+import com.markupartist.android.widget.ActionBar.IntentAction;
 
 public class EventActivity extends BaseActivity implements OnItemClickListener {
 
@@ -42,7 +46,13 @@ public class EventActivity extends BaseActivity implements OnItemClickListener {
 		
 		if (getExtras()) {
 			
-			actionBar.setTitle(EventUtil.splitLocation(location)[0]);
+			String[] locParts = EventUtil.splitLocation(location);
+			actionBar.setTitle(locParts[0]);
+			
+			Uri geoUri = Uri.parse("geo:0,0?q="+location);
+			Intent mapIntent = new Intent(Intent.ACTION_VIEW, geoUri); 
+			
+			actionBar.addAction(new IntentAction(this, mapIntent, R.drawable.ic_title_map));
 			
 			listView = (ListView) findViewById(android.R.id.list);
 			Cursor cursor = getContentResolver().query(Events.buildEventsOn(day, location), EventContract.RICH_PROJECTION, null, null, Events.EVENT_BEGIN);
