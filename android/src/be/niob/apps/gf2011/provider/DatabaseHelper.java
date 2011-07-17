@@ -16,6 +16,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	private static String DB_PATH = "/data/data/be.niob.apps.gf2011/databases/";
 
 	private static String DB_NAME = "events.db";
+	
+	private static int DB_VERSION = 6;
 
 	private SQLiteDatabase db;
 
@@ -33,7 +35,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	 */
 	public DatabaseHelper(Context context) {
 
-		super(context, DB_NAME, null, 1);
+		super(context, DB_NAME, null, DB_VERSION);
 		this.context = context;
 	}
 
@@ -155,6 +157,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 		
+		if (newVersion > oldVersion) {
+			try {
+				copyDataBase();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		/*if (checkDataBase()) {
+			String myPath = DB_PATH + DB_NAME;
+			File dbFile = new File(myPath);
+			boolean succes = dbFile.delete();
+		}*/
 	}
 
 }

@@ -35,8 +35,6 @@ public class LocationActivity extends BaseActivity implements OnItemClickListene
 	
 	private ListView listView;
 	
-	
-	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
