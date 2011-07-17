@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" 
+xmlns:app="http://schemas.android.com/apk/res/be.niob.apps.sf2011"
+     android:orientation="vertical"
+     android:layout_width="fill_parent"
+     android:layout_height="fill_parent">
+     
+     <com.markupartist.android.widget.ActionBar
+	    android:id="@+id/actionbar"
+	    title="@string/app_name"
+	    style="@style/ActionBar"
+	    />
+     
+    <include 
+    	layout="@layout/loader"
+    	android:visibility="gone"
+    	/>
+    	
+	<include
+		layout="@layout/list_empty"
+		android:visibility="gone"
+		/>
+    
+    <ExpandableListView
+		android:id="@android:id/list"
+		android:layout_width="fill_parent" 
+		android:layout_height="fill_parent"
+		android:layout_weight="1"
+		/>
+    
+ </LinearLayout>

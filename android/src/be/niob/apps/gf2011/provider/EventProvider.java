@@ -171,7 +171,7 @@ public class EventProvider extends ContentProvider {
                 		.where(Events.EVENT_LOCATION + "=?", location);
             }
             case EVENTS_NOW: {
-            	String current = ""+(System.currentTimeMillis() / 1000L);;
+            	String current = ""+((System.currentTimeMillis() / 1000L) + (2*60*60));
             	return builder.table(Tables.EVENTS)
                 		.where(Events.EVENT_TIME_BEGIN + "<=?", current)
                 		.where(Events.EVENT_TIME_END + ">=?", current);

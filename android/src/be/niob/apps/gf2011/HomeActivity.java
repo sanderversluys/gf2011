@@ -59,6 +59,7 @@ public class HomeActivity extends BaseActivity implements OnClickListener {
 				intent = new Intent(this, EventActivity.class);
 				intent.putExtra(EventActivity.NOW, true);
 				startActivity(intent);
+				//new Intent(this, NowActivity.class));
 				break;
 		}
 	}

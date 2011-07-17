@@ -77,6 +77,7 @@ public class EventActivity extends BaseActivity implements OnItemClickListener {
 		private int descriptionIndex;
 		private int beginIndex;
 		private int endIndex;
+		private int locationIndex;
 		
 		public EventAdapter(Context context, Cursor c) {
 			super(context, c);
@@ -84,6 +85,7 @@ public class EventActivity extends BaseActivity implements OnItemClickListener {
 			descriptionIndex = c.getColumnIndex(Events.EVENT_DESCRIPTION);
 			beginIndex = c.getColumnIndex(Events.EVENT_BEGIN);
 			endIndex = c.getColumnIndex(Events.EVENT_END);
+			locationIndex = c.getColumnIndex(Events.EVENT_LOCATION);
 			mInflater = LayoutInflater.from(context);
 		}
 
@@ -93,14 +95,20 @@ public class EventActivity extends BaseActivity implements OnItemClickListener {
 			final TextView titleView = (TextView) view.findViewById(R.id.title);
             final TextView descriptionView = (TextView) view.findViewById(R.id.description);
             final TextView timeView = (TextView) view.findViewById(R.id.time);
+            final TextView locationView = (TextView) view.findViewById(R.id.location);
             
             String title = cursor.getString(titleIndex);
             String description = cursor.getString(descriptionIndex);
             String time = cursor.getString(beginIndex) + " - " + cursor.getString(endIndex);
+            String location = cursor.getString(locationIndex);
             
             titleView.setText(title);
             descriptionView.setText(description);
             timeView.setText(time);
+            if (now) {
+            	locationView.setText(location);
+            	locationView.setVisibility(View.VISIBLE);
+            }
 		}
 
 		@Override
