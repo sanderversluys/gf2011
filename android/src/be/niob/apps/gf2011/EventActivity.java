@@ -24,11 +24,13 @@ public class EventActivity extends BaseActivity implements OnItemClickListener {
 
 	private ListView listView;
 	
+	public static String NOW ="now";
 	public static String DAY ="day";
 	public static String LOCATION = "location";
 	
 	private String day;
 	private String location;
+	private boolean now;
 	
 	/*
 	 Cursor cursor = getContentResolver().query(Events.buildEventsOnDayUri("17/07/2011"), EventContract.SMALL_PROJECTION, null, null, null);
@@ -46,16 +48,20 @@ public class EventActivity extends BaseActivity implements OnItemClickListener {
 		
 		if (getExtras()) {
 			
-			String[] locParts = EventUtil.splitLocation(location);
-			actionBar.setTitle(locParts[0]);
+			Cursor cursor = null;
 			
-			Uri geoUri = Uri.parse("geo:0,0?q="+location);
-			Intent mapIntent = new Intent(Intent.ACTION_VIEW, geoUri); 
-			
-			actionBar.addAction(new IntentAction(this, mapIntent, R.drawable.ic_title_map));
+			if (now) {
+				cursor = getContentResolver().query(Events.buildEventsNow(), EventContract.RICH_PROJECTION, null, null, Events.EVENT_BEGIN);
+			} else {
+				cursor = getContentResolver().query(Events.buildEventsOn(day, location), EventContract.RICH_PROJECTION, null, null, Events.EVENT_BEGIN);
+				String[] locParts = EventUtil.splitLocation(location);
+				actionBar.setTitle(locParts[0]);
+				Uri geoUri = Uri.parse("geo:0,0?q="+location);
+				Intent mapIntent = new Intent(Intent.ACTION_VIEW, geoUri); 
+				actionBar.addAction(new IntentAction(this, mapIntent, R.drawable.ic_title_map));
+			}
 			
 			listView = (ListView) findViewById(android.R.id.list);
-			Cursor cursor = getContentResolver().query(Events.buildEventsOn(day, location), EventContract.RICH_PROJECTION, null, null, Events.EVENT_BEGIN);
 			startManagingCursor(cursor);
 			ListAdapter adapter = new EventAdapter(this, cursor);
 			listView.setAdapter(adapter);
@@ -111,6 +117,7 @@ public class EventActivity extends BaseActivity implements OnItemClickListener {
 				day = extras.getString(DAY);
 			if (extras.containsKey(LOCATION))
 				location = extras.getString(LOCATION);
+			now = extras.containsKey(NOW);
 			return true;
 		}
 		return false;

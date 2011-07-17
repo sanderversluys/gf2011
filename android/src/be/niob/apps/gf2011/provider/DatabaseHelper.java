@@ -17,7 +17,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 	private static String DB_NAME = "events.db";
 	
-	private static int DB_VERSION = 6;
+	private static int DB_VERSION = 2;
 
 	private SQLiteDatabase db;
 
@@ -45,6 +45,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	 * */
 	public void createDataBase() throws IOException {
 
+		
+		/*
+		 * CREATE TABLE "events" ("_id" INTEGER PRIMARY KEY  NOT NULL , "title" TEXT, "description" TEXT, "date" TEXT, "begin" TEXT, "end" TEXT, "time_begin" NUMERIC, "time_end" NUMERIC, "location" TEXT, "starred" INTEGER, "indoor" INTEGER, "participants" INTEGER)
+		 */
+		
 		boolean dbExist = checkDataBase();
 
 		if (dbExist) {
@@ -108,7 +113,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	private void copyDataBase() throws IOException {
 
 		// Open your local db as the input stream
-		InputStream myInput = context.getAssets().open(DB_NAME);
+		InputStream myInput = context.getAssets().open(DB_NAME + ".png");
 
 		// Path to the just created empty db
 		String outFileName = DB_PATH + DB_NAME;

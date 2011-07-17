@@ -31,6 +31,7 @@ public class EventProvider extends ContentProvider {
     private static final int EVENTS_BETWEEN = 102;
     private static final int EVENTS_ON = 103;
     private static final int EVENTS_ON_AND_IN = 104;
+    private static final int EVENTS_NOW = 105;
     
     private static final int LOCATIONS = 300;
     private static final int LOCATIONS_ON_DAY = 301;
@@ -40,6 +41,7 @@ public class EventProvider extends ContentProvider {
         final String authority = EventContract.CONTENT_AUTHORITY;
 
         matcher.addURI(authority, "events", EVENTS);
+        matcher.addURI(authority, "events/now", EVENTS_NOW);
         matcher.addURI(authority, "events/on/*/in/*", EVENTS_ON_AND_IN);
         matcher.addURI(authority, "events/on/*", EVENTS_ON);
         matcher.addURI(authority, "events/between/*/*", EVENTS_BETWEEN);
@@ -78,6 +80,8 @@ public class EventProvider extends ContentProvider {
             case EVENTS_ON:
             	return Events.CONTENT_TYPE;
             case EVENTS_ON_AND_IN:
+            	return Events.CONTENT_TYPE;
+            case EVENTS_NOW:
             	return Events.CONTENT_TYPE;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
@@ -165,6 +169,12 @@ public class EventProvider extends ContentProvider {
             	return builder.table(Tables.EVENTS)
                 		.where(Events.EVENT_DATE + "=?", date)
                 		.where(Events.EVENT_LOCATION + "=?", location);
+            }
+            case EVENTS_NOW: {
+            	String current = ""+(System.currentTimeMillis() / 1000L);;
+            	return builder.table(Tables.EVENTS)
+                		.where(Events.EVENT_TIME_BEGIN + "<=?", current)
+                		.where(Events.EVENT_TIME_END + ">=?", current);
             }
             default: {
                 throw new UnsupportedOperationException("Unknown uri: " + uri);

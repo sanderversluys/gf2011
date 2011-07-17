@@ -15,7 +15,10 @@ public class EventContract {
 		String EVENT_DATE = "date";
 		String EVENT_BEGIN = "begin";
 		String EVENT_END = "end";
+		String EVENT_TIME_BEGIN = "time_begin";
+		String EVENT_TIME_END = "time_end";
 		String EVENT_LOCATION = "location";
+		String EVENT_STARRED = "starred";
 		String EVENT_INDOOR = "indoor";
 		String EVENT_PARTICIPANTS = "participants";
 	}
@@ -48,6 +51,10 @@ public class EventContract {
 		public static Uri buildEventsOn(String day, String location) {
 			return CONTENT_URI.buildUpon().appendPath("on").appendPath(day)
 										  .appendPath("in").appendPath(location).build();
+		}
+		
+		public static Uri buildEventsNow() {
+			return CONTENT_URI.buildUpon().appendPath("now").build();
 		}
 		
 		public static String getEventId(Uri uri) {
