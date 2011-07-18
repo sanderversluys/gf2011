@@ -68,14 +68,18 @@ public class EventContract {
 		public static final String PREFERENCES_KEY = "LocationsPrefs";
 		
 		public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon()
-		.appendPath(PATH_LOCATIONS).build();
+												.appendPath(PATH_LOCATIONS).build();
 		
 		public static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd.gf2011.location";
 		public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd.gf2011.location";
 		
 		public static Uri buildLocationsOnDayUri(String day) {
 			return CONTENT_URI.buildUpon().appendPath("day").appendPath(day).build();
-		}	
+		}
+		
+		public static Uri buildLocationsFilter(String filter) {
+			return CONTENT_URI.buildUpon().appendPath("filter").appendPath(filter).build();
+		}
 		
 	}
 	

@@ -14,6 +14,8 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.CursorAdapter;
+import android.widget.FilterQueryProvider;
+import android.widget.Filterable;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -26,6 +28,7 @@ public class ChooseLocationsActivity extends Activity implements OnItemClickList
 
 	private List<String> favLocations;
 	private ListView listView;
+	private Cursor cursor;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -34,18 +37,20 @@ public class ChooseLocationsActivity extends Activity implements OnItemClickList
 		
 		favLocations = EventUtil.loadFavs(this);
 		
-		Cursor	cursor = getContentResolver().query(Locations.CONTENT_URI, EventContract.LOCATION_PROJECTION, null, null, null);
+		cursor = getContentResolver().query(Locations.CONTENT_URI, EventContract.LOCATION_PROJECTION, null, null, null);
 		startManagingCursor(cursor);
 		
-		ListAdapter adapter = new LocationAdapter(this, cursor, android.R.layout.simple_list_item_2);
+		LocationAdapter adapter = new LocationAdapter(this, cursor, android.R.layout.simple_list_item_2);
 		listView = (ListView) findViewById(android.R.id.list);
 		listView.setAdapter(adapter);
 		listView.setOnItemClickListener(this);
 		listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+		listView.setTextFilterEnabled(true);
 	}
 	
-	protected class LocationAdapter extends CursorAdapter {
+	protected class LocationAdapter extends CursorAdapter implements Filterable {
 
+		private Context context;
 		private LayoutInflater mInflater;
 		private int locationIndex;
 		private int layoutId;
@@ -54,6 +59,7 @@ public class ChooseLocationsActivity extends Activity implements OnItemClickList
 		
 		public LocationAdapter(Context context, Cursor c, int layoutId) {
 			super(context, c);
+			this.context = context;
 			locationIndex = c.getColumnIndex(Events.EVENT_LOCATION);
 			mInflater = LayoutInflater.from(context);
 			this.layoutId = layoutId;
@@ -82,7 +88,14 @@ public class ChooseLocationsActivity extends Activity implements OnItemClickList
 		public View newView(Context context, Cursor cursor, ViewGroup parent) {
 			return mInflater.inflate(layoutId, null);
 		}
-
+		
+		 @Override 
+	    public Cursor runQueryOnBackgroundThread(CharSequence constraint) {
+	        if (getFilterQueryProvider() != null) { return getFilterQueryProvider().runQuery(constraint); }
+	        Cursor cursor = getContentResolver().query(Locations.buildLocationsFilter(constraint.toString()), EventContract.LOCATION_PROJECTION, null, new String[] {"%"+constraint.toString()+"%"}, null);
+	        
+	        return cursor;
+	    }
 	}
 	
 	@Override

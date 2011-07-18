@@ -35,6 +35,7 @@ public class EventProvider extends ContentProvider {
     
     private static final int LOCATIONS = 300;
     private static final int LOCATIONS_ON_DAY = 301;
+    private static final int LOCATIONS_FILTER = 302;
     
     private static UriMatcher buildUriMatcher() {
         final UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
@@ -48,6 +49,7 @@ public class EventProvider extends ContentProvider {
         matcher.addURI(authority, "events/*", EVENTS_ID);
         
         matcher.addURI(authority, "locations", LOCATIONS);
+        matcher.addURI(authority, "locations/filter/*", LOCATIONS_FILTER);
         matcher.addURI(authority, "locations/day/*", LOCATIONS_ON_DAY);
         
         return matcher;
@@ -98,7 +100,10 @@ public class EventProvider extends ContentProvider {
         switch (match) {
 	        case LOCATIONS: {
 	        	return db.rawQuery("select distinct(location), (select -1) as _id from events", selectionArgs);
-	        } 
+	        }
+	        case LOCATIONS_FILTER: {
+	        	return db.rawQuery("select distinct(location) as location, (select -1) as _id from events where location like ?", selectionArgs); // where lower(location) like '%+"+uri.getPathSegments().get(2)+"+%'", selectionArgs);
+	        }
 	        case LOCATIONS_ON_DAY: {
 	        	
 	        	String sql = "select distinct(location), (select -1) as _id from events where date = '" + uri.getPathSegments().get(2) + "'";
