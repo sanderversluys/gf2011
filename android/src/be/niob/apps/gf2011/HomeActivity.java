@@ -1,11 +1,16 @@
 package be.niob.apps.gf2011;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import be.niob.apps.gf2011.provider.DatabaseHelper;
 
 
 public class HomeActivity extends BaseActivity implements OnClickListener {
@@ -20,6 +25,7 @@ public class HomeActivity extends BaseActivity implements OnClickListener {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		checkDatabase();
 	}
 		
     @Override
@@ -61,6 +67,38 @@ public class HomeActivity extends BaseActivity implements OnClickListener {
 				startActivity(intent);
 				//new Intent(this, NowActivity.class));
 				break;
+		}
+	}
+	
+	private void checkDatabase() {
+		final int currentVersion = DatabaseHelper.DB_VERSION;
+		
+		final SharedPreferences prefs = getSharedPreferences(DatabaseHelper.class.getName(), Context.MODE_PRIVATE);
+		final int lastVersion = prefs.getInt("DB_VERSION", 1);
+		
+		if (currentVersion > lastVersion) {
+			
+			progressDialog = ProgressDialog.show(this, "Bezig met laden", "bezig met database te initialiseren", true);
+			
+			new AsyncTask<Void, Void, Void>() {
+
+				@Override
+				protected Void doInBackground(Void... params) {
+					DatabaseHelper db = new DatabaseHelper(HomeActivity.this);
+					db.getReadableDatabase();
+					return null;
+				}
+				
+				protected void onPostExecute(Void result) {
+					progressDialog.dismiss();
+					
+					Editor editor = prefs.edit();
+					editor.putInt("DB_VERSION", currentVersion);
+					editor.commit();
+				}
+				
+			}.execute();
+			
 		}
 	}
 	

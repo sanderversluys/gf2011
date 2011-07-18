@@ -18,7 +18,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 	private static String DB_NAME = "events.db";
 
-	private static int DB_VERSION = 3;
+	public static int DB_VERSION = 6;
 
 	private SQLiteDatabase db;
 
