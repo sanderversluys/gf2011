@@ -78,6 +78,8 @@ public class HomeActivity extends BaseActivity implements OnClickListener {
 		
 		if (currentVersion > lastVersion) {
 			
+			this.deleteDatabase(DatabaseHelper.DB_NAME);
+			
 			progressDialog = ProgressDialog.show(this, "Bezig met laden", "bezig met database te initialiseren", true);
 			
 			new AsyncTask<Void, Void, Void>() {

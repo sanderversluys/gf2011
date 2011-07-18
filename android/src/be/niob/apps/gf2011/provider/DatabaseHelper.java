@@ -16,9 +16,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 	private static String DB_PATH = "/data/data/be.niob.apps.gf2011/databases/";
 
-	private static String DB_NAME = "events.db";
+	public static String DB_NAME = "events.db";
 
-	public static int DB_VERSION = 4;
+	public static int DB_VERSION = 5;
 
 	private SQLiteDatabase db;
 
@@ -40,15 +40,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 		super(context, DB_NAME, null, DB_VERSION);
 		this.context = context;
-	}
-
-	public void openDataBase() throws SQLException {
-
-		// Open the database
-		String myPath = DB_PATH + DB_NAME;
-		db = SQLiteDatabase.openDatabase(myPath, null,
-				SQLiteDatabase.OPEN_READONLY);
-
 	}
 
 	@Override
