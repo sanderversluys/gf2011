@@ -57,11 +57,11 @@ public class EventProvider extends ContentProvider {
 	public boolean onCreate() {
     	final Context context = getContext();
         dbHelper = new DatabaseHelper(context);
-        try {
+        /*try {
 			dbHelper.createDataBase();
 		} catch (IOException e) {
 			e.printStackTrace();
-		}
+		}*/
         return true;
 	}
     

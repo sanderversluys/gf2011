@@ -1,31 +1,34 @@
 package be.niob.apps.gf2011.provider;
 
-import java.io.FileOutputStream;
+import java.io.BufferedReader;
+import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.InputStreamReader;
 
 import android.content.Context;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
 	private static String DB_PATH = "/data/data/be.niob.apps.gf2011/databases/";
 
 	private static String DB_NAME = "events.db";
-	
-	private static int DB_VERSION = 2;
+
+	private static int DB_VERSION = 3;
 
 	private SQLiteDatabase db;
 
 	private final Context context;
-	
+
 	interface Tables {
-        String EVENTS = "events";
+		String EVENTS = "events";
 	}
+
+	public static final String CREATE_SQL = "CREATE TABLE \"events\" (\"_id\" INTEGER PRIMARY KEY  NOT NULL , \"title\" TEXT, \"description\" TEXT, \"date\" TEXT, \"begin\" TEXT, \"end\" TEXT, \"time_begin\" NUMERIC, \"time_end\" NUMERIC, \"location\" TEXT, \"starred\" INTEGER, \"indoor\" INTEGER, \"participants\" INTEGER)";
 
 	/**
 	 * Constructor Takes and keeps a reference of the passed context in order to
@@ -37,102 +40,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 		super(context, DB_NAME, null, DB_VERSION);
 		this.context = context;
-	}
-
-	/**
-	 * Creates a empty database on the system and rewrites it with your own
-	 * database.
-	 * */
-	public void createDataBase() throws IOException {
-
-		
-		/*
-		 * CREATE TABLE "events" ("_id" INTEGER PRIMARY KEY  NOT NULL , "title" TEXT, "description" TEXT, "date" TEXT, "begin" TEXT, "end" TEXT, "time_begin" NUMERIC, "time_end" NUMERIC, "location" TEXT, "starred" INTEGER, "indoor" INTEGER, "participants" INTEGER)
-		 */
-		
-		boolean dbExist = checkDataBase();
-
-		if (dbExist) {
-			// do nothing - database already exist
-		} else {
-
-			// By calling this method and empty database will be created into
-			// the default system path
-			// of your application so we are gonna be able to overwrite that
-			// database with our database.
-			this.getReadableDatabase();
-
-			try {
-
-				copyDataBase();
-
-			} catch (IOException e) {
-
-				throw new Error("Error copying database");
-
-			}
-		}
-
-	}
-
-	/**
-	 * Check if the database already exist to avoid re-copying the file each
-	 * time you open the application.
-	 * 
-	 * @return true if it exists, false if it doesn't
-	 */
-	private boolean checkDataBase() {
-
-		SQLiteDatabase checkDB = null;
-
-		try {
-			String myPath = DB_PATH + DB_NAME;
-			checkDB = SQLiteDatabase.openDatabase(myPath, null,
-					SQLiteDatabase.OPEN_READONLY);
-
-		} catch (SQLiteException e) {
-
-			// database does't exist yet.
-
-		}
-
-		if (checkDB != null) {
-
-			checkDB.close();
-
-		}
-
-		return checkDB != null ? true : false;
-	}
-
-	/**
-	 * Copies your database from your local assets-folder to the just created
-	 * empty database in the system folder, from where it can be accessed and
-	 * handled. This is done by transfering bytestream.
-	 * */
-	private void copyDataBase() throws IOException {
-
-		// Open your local db as the input stream
-		InputStream myInput = context.getAssets().open(DB_NAME + ".png");
-
-		// Path to the just created empty db
-		String outFileName = DB_PATH + DB_NAME;
-
-		// Open the empty db as the output stream
-		OutputStream myOutput = new FileOutputStream(outFileName);
-
-		// transfer bytes from the inputfile to the outputfile
-		byte[] buffer = new byte[1024];
-		int length;
-		while ((length = myInput.read(buffer)) > 0) {
-			myOutput.write(buffer, 0, length);
-		}
-
-		// Close the streams
-		myOutput.flush();
-		myOutput.close();
-		myInput.close();
-
 	}
 
 	public void openDataBase() throws SQLException {
@@ -156,25 +63,28 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 	@Override
 	public void onCreate(SQLiteDatabase db) {
-
+		db.execSQL(CREATE_SQL);
+		InputStream inputStream = null;
+		try {
+			inputStream = context.getAssets().open("events.csv.png");
+			DataInputStream in = new DataInputStream(inputStream);
+			BufferedReader br = new BufferedReader(new InputStreamReader(in));
+			String strLine;
+			String insert_start = "INSERT INTO events VALUES(";
+			String insert_end = ")";
+			while ((strLine = br.readLine()) != null)   {
+				db.execSQL(insert_start + strLine + insert_end);
+			}
+			in.close();
+		} catch (IOException e) {
+			Log.e("tag", e.getMessage());
+		}
 	}
 
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-		
-		if (newVersion > oldVersion) {
-			try {
-				copyDataBase();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-		
-		/*if (checkDataBase()) {
-			String myPath = DB_PATH + DB_NAME;
-			File dbFile = new File(myPath);
-			boolean succes = dbFile.delete();
-		}*/
+		db.execSQL("DROP TABLE IF EXISTS " + Tables.EVENTS);
+		onCreate(db);
 	}
 
 }
