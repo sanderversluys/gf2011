@@ -21,8 +21,12 @@
         <activity android:name=".DaysActivity"
         	android:label="@string/app_name"/>
         	
-        <activity android:name=".LocationActivity"
+		<activity android:name=".LocationActivity"
         	android:label="@string/app_name"/>
+        	
+        <activity android:name=".ChooseLocationsActivity"
+        	android:label="@string/app_name"
+        	android:theme="@style/Theme.Dialog"/>
         
         <activity android:name=".EventActivity"
         	android:label="@string/app_name"/>
