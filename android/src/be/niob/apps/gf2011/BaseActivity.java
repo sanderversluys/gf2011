@@ -25,6 +25,8 @@ import com.markupartist.android.widget.ActionBar.IntentAction;
 
 public abstract class BaseActivity extends Activity {
 	
+	protected static final int REQUEST_LOCATIONS = 1;
+	
 	protected ActionBar actionBar;
 
 	@Override
@@ -49,7 +51,7 @@ public abstract class BaseActivity extends Activity {
 	    	
 	    	//actionBar.addAction(new FilterLocation());
 	    	
-	    	actionBar.addAction(new IntentAction(this, new Intent(this, ChooseLocationsActivity.class), R.drawable.ic_title_map));
+	    	actionBar.addAction(new FilterLocation());
 	    	//actionBar.addAction(new IntentAction(this, new Intent(this, DaysActivity.class), R.drawable.ic_title_search));
     	}
     }
@@ -63,26 +65,8 @@ public abstract class BaseActivity extends Activity {
 
 	    @Override
 	    public void performAction(View view) {
-	    	
-	    	
-	    	//startActivity(intent)
-	    	
-	    	/*Cursor cursor = getContentResolver().query(Locations.CONTENT_URI, EventContract.LOCATION_PROJECTION, null, null, null);
-	    	ListAdapter adapter = new LocationAdapter(BaseActivity.this, cursor, R.layout.simple_list_item_checked);
-	    	
-	    	AlertDialog.Builder builder = new AlertDialog.Builder(BaseActivity.this);
-	    	builder.setTitle("Kies u locaties");
-	    	builder.set
-	    	builder.setAdapter(adapter, new DialogInterface.OnClickListener() {
-				
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					// TODO Auto-generated method stub
-					
-				}
-			});
-	    	AlertDialog alert = builder.create();
-	    	alert.show();*/
+	    	Intent intent = new Intent(BaseActivity.this, ChooseLocationsActivity.class);
+	    	startActivityForResult(intent, REQUEST_LOCATIONS);
 	    }
 
 	}

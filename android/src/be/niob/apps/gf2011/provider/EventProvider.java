@@ -105,21 +105,8 @@ public class EventProvider extends ContentProvider {
 	        	return db.rawQuery("select distinct(location) as location, (select -1) as _id from events where location like ?", selectionArgs); // where lower(location) like '%+"+uri.getPathSegments().get(2)+"+%'", selectionArgs);
 	        }
 	        case LOCATIONS_ON_DAY: {
-	        	
 	        	String sql = "select distinct(location), (select -1) as _id from events where date = '" + uri.getPathSegments().get(2) + "'";
-	        	
-	        	List<String> favs = EventUtil.loadFavs(getContext());
-	        	StringBuffer filter = new StringBuffer();
-	        	if (favs.size() > 0) {
-		        	filter.append(" AND (");
-		        	int size = favs.size();
-		        	for (int i=0; i<size; i++) {
-		        		filter.append("location = '" + favs.get(i) + "'");
-		        		if (i<size-1) filter.append(" OR ");
-		        	}
-		        	filter.append(")");
-	        	}
-	        	return db.rawQuery(sql + filter, selectionArgs);
+	        	return db.rawQuery(sql + getLocationFilterSql(), selectionArgs);
 	        }
 	        default: {
 	            // Most cases are handled with simple SelectionBuilder
@@ -144,6 +131,21 @@ public class EventProvider extends ContentProvider {
 	        }*/
 	    }
 
+	}
+	
+	private String getLocationFilterSql() {
+		List<String> favs = EventUtil.loadFavs(getContext());
+    	StringBuffer filter = new StringBuffer();
+    	if (favs.size() > 0) {
+        	filter.append(" AND (");
+        	int size = favs.size();
+        	for (int i=0; i<size; i++) {
+        		filter.append("location = '" + favs.get(i) + "'");
+        		if (i<size-1) filter.append(" OR ");
+        	}
+        	filter.append(")");
+    	}
+    	return filter.toString();
 	}
 	
 	private SelectionBuilder buildSelection(Uri uri, int match) {
@@ -180,6 +182,7 @@ public class EventProvider extends ContentProvider {
             	return builder.table(Tables.EVENTS)
                 		.where(Events.EVENT_TIME_BEGIN + "<=?", current)
                 		.where(Events.EVENT_TIME_END + ">=?", current);
+                		//.where(getLocationFilterSql(), "");
             }
             default: {
                 throw new UnsupportedOperationException("Unknown uri: " + uri);

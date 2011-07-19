@@ -48,26 +48,34 @@ public class EventActivity extends BaseActivity implements OnItemClickListener {
 		
 		if (getExtras()) {
 			
-			Cursor cursor = null;
-			
-			if (now) {
-				cursor = getContentResolver().query(Events.buildEventsNow(), EventContract.RICH_PROJECTION, null, null, Events.EVENT_BEGIN);
-			} else {
-				cursor = getContentResolver().query(Events.buildEventsOn(day, location), EventContract.RICH_PROJECTION, null, null, Events.EVENT_BEGIN);
-				String[] locParts = EventUtil.splitLocation(location);
-				actionBar.setTitle(locParts[0]);
-				Uri geoUri = Uri.parse("geo:0,0?q="+location);
-				Intent mapIntent = new Intent(Intent.ACTION_VIEW, geoUri); 
-				actionBar.addAction(new IntentAction(this, mapIntent, R.drawable.ic_title_map));
-			}
-			
-			listView = (ListView) findViewById(android.R.id.list);
-			startManagingCursor(cursor);
-			ListAdapter adapter = new EventAdapter(this, cursor);
-			listView.setAdapter(adapter);
-			listView.setOnItemClickListener(this);
+			fetchData();
 		}
 		
+	}
+	
+	protected void fetchData() {
+		Cursor cursor = null;
+		if (now) {
+			cursor = getContentResolver().query(Events.buildEventsNow(), EventContract.RICH_PROJECTION, null, null, Events.EVENT_BEGIN);
+		} else {
+			cursor = getContentResolver().query(Events.buildEventsOn(day, location), EventContract.RICH_PROJECTION, null, null, Events.EVENT_BEGIN);
+			String[] locParts = EventUtil.splitLocation(location);
+			actionBar.setTitle(locParts[0]);
+			Uri geoUri = Uri.parse("geo:0,0?q="+location);
+			Intent mapIntent = new Intent(Intent.ACTION_VIEW, geoUri); 
+			actionBar.addAction(new IntentAction(this, mapIntent, R.drawable.ic_title_map));
+		}
+		
+		listView = (ListView) findViewById(android.R.id.list);
+		startManagingCursor(cursor);
+		ListAdapter adapter = new EventAdapter(this, cursor);
+		listView.setAdapter(adapter);
+		listView.setOnItemClickListener(this);
+	}
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		fetchData();
 	}
 	
 	protected class EventAdapter extends CursorAdapter {
