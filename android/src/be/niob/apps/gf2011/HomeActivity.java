@@ -11,13 +11,13 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import be.niob.apps.gf2011.provider.DatabaseHelper;
+import be.niob.apps.gf2011.util.Dates;
 
 
 public class HomeActivity extends BaseActivity implements OnClickListener {
 	
 	private Button btDay;
-	private Button btLocation;
-	private Button btStarred;
+	private Button btToday;
 	private Button btNow;
 	
 	private ProgressDialog progressDialog;
@@ -38,10 +38,8 @@ public class HomeActivity extends BaseActivity implements OnClickListener {
     	super.findAndSetupViews();
     	btDay = (Button) findViewById(R.id.home_btn_day);
     	btDay.setOnClickListener(this);
-    	btLocation = (Button) findViewById(R.id.home_btn_location);
-    	btLocation.setOnClickListener(this);
-    	btStarred = (Button) findViewById(R.id.home_btn_starred);
-    	btStarred.setOnClickListener(this);
+    	btToday = (Button) findViewById(R.id.home_btn_today);
+    	btToday.setOnClickListener(this);
     	btNow = (Button) findViewById(R.id.home_btn_now);
     	btNow.setOnClickListener(this);
     }
@@ -53,19 +51,15 @@ public class HomeActivity extends BaseActivity implements OnClickListener {
 			case R.id.home_btn_day:
 				startActivity(new Intent(this, DaysActivity.class));
 				break;
-			case R.id.home_btn_location:
+			case R.id.home_btn_today:
 				intent = new Intent(this, LocationActivity.class);
-				intent.putExtra(LocationActivity.ACTION_CHOOSE_FAVS, true);
+				intent.putExtra(LocationActivity.DAY, Dates.getToday());
 				startActivity(intent);
-				break;
-			case R.id.home_btn_starred:
-				// TODO go to starred activity
 				break;
 			case R.id.home_btn_now:
 				intent = new Intent(this, EventActivity.class);
 				intent.putExtra(EventActivity.NOW, true);
 				startActivity(intent);
-				//new Intent(this, NowActivity.class));
 				break;
 		}
 	}

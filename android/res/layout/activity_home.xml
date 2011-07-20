@@ -21,24 +21,17 @@
 	        android:text="per dag"
 	        android:drawableTop="@drawable/ic_day"
 	        style="@style/DashboardButton"/>
-	    <Button android:id="@+id/home_btn_location"
+	    <Button android:id="@+id/home_btn_today"
 	    	android:layout_width="wrap_content"
 	    	android:layout_height="wrap_content"
-	        android:text="kies locaties"
-	        android:drawableTop="@drawable/ic_location"
-	        style="@style/DashboardButton"/>
-	    <Button android:id="@+id/home_btn_starred"
-		    android:layout_width="wrap_content"
-	    	android:layout_height="wrap_content"
-	        android:text="met ster"
-	        android:drawableTop="@drawable/ic_starred"
-	        android:visibility="gone"
+	        android:text="vandaag"
+	        android:drawableTop="@drawable/ic_now"
 	        style="@style/DashboardButton"/>
 	    <Button android:id="@+id/home_btn_now"
 	    	android:layout_width="wrap_content"
 	    	android:layout_height="wrap_content"
 	        android:text="nu bezig"
-	        android:drawableTop="@drawable/ic_now"
+	        android:drawableTop="@drawable/ic_clock"
 	        style="@style/DashboardButton"/>
 
 	</be.niob.apps.gf2011.widget.DashboardLayout>

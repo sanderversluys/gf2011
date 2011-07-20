@@ -4,6 +4,7 @@ import java.util.List;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ import android.widget.CursorAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 import be.niob.apps.gf2011.provider.EventContract;
 import be.niob.apps.gf2011.provider.EventContract.Events;
 import be.niob.apps.gf2011.provider.EventContract.Locations;
@@ -31,6 +33,8 @@ public class LocationActivity extends BaseActivity implements OnItemClickListene
 	private boolean isChoosingFavs = false;
 	private List<String> favLocations;
 	
+	private Cursor cursor;
+	
 	private String day;
 	
 	private ListView listView;
@@ -38,13 +42,17 @@ public class LocationActivity extends BaseActivity implements OnItemClickListene
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		fetchData();
+	}
+	
+	protected void fetchData() {
 		Bundle extras = getIntent().getExtras();
-		
 		if (extras != null && (extras.containsKey(DAY) || extras.containsKey(ACTION_CHOOSE_FAVS))) {
 			
 			isChoosingFavs = extras.containsKey(ACTION_CHOOSE_FAVS);
 			
-			Cursor cursor = null;
+			if (cursor != null)
+				stopManagingCursor(cursor);
 			
 			if (isChoosingFavs) {
 				favLocations = EventUtil.loadFavs(this);
@@ -68,6 +76,11 @@ public class LocationActivity extends BaseActivity implements OnItemClickListene
 			
 		} else
 			finish();
+	}
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		fetchData();
 	}
 	
 	protected class LocationAdapter extends CursorAdapter {

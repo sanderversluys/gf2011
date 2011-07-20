@@ -5,6 +5,28 @@ xmlns:app="http://schemas.android.com/apk/res/be.niob.apps.sf2011"
      android:layout_width="fill_parent"
      android:layout_height="fill_parent">
      
+	<LinearLayout
+		android:orientation="horizontal"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content">
+		
+		<Button 
+			android:id="@+id/reset"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="reset"
+			
+			android:layout_weight="1"/>
+			
+		<Button 
+			android:id="@+id/populair"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="populair"
+			android:layout_weight="1"/>
+	
+	</LinearLayout>
+     
     <include 
     	layout="@layout/loader"
     	android:visibility="gone"

@@ -32,22 +32,11 @@ public class EventActivity extends BaseActivity implements OnItemClickListener {
 	private String location;
 	private boolean now;
 	
-	/*
-	 Cursor cursor = getContentResolver().query(Events.buildEventsOnDayUri("17/07/2011"), EventContract.SMALL_PROJECTION, null, null, null);
-		startManagingCursor(cursor);
-		
-		String[] columns = new String[] { Events.EVENT_TITLE, Events.EVENT_DESCRIPTION };
-		int[] to = new int[] { android.R.id.text1, android.R.id.text2 };
-		
-		SimpleCursorAdapter mAdapter = new SimpleCursorAdapter(this, android.R.layout.simple_list_item_2, cursor, columns, to);
-	 */
-	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
 		if (getExtras()) {
-			
 			fetchData();
 		}
 		
@@ -59,11 +48,11 @@ public class EventActivity extends BaseActivity implements OnItemClickListener {
 			cursor = getContentResolver().query(Events.buildEventsNow(), EventContract.RICH_PROJECTION, null, null, Events.EVENT_BEGIN);
 		} else {
 			cursor = getContentResolver().query(Events.buildEventsOn(day, location), EventContract.RICH_PROJECTION, null, null, Events.EVENT_BEGIN);
-			String[] locParts = EventUtil.splitLocation(location);
+			/*String[] locParts = EventUtil.splitLocation(location);
 			actionBar.setTitle(locParts[0]);
 			Uri geoUri = Uri.parse("geo:0,0?q="+location);
 			Intent mapIntent = new Intent(Intent.ACTION_VIEW, geoUri); 
-			actionBar.addAction(new IntentAction(this, mapIntent, R.drawable.ic_title_map));
+			actionBar.addAction(new IntentAction(this, mapIntent, R.drawable.ic_title_map));*/
 		}
 		
 		listView = (ListView) findViewById(android.R.id.list);

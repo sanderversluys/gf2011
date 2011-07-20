@@ -1,6 +1,5 @@
 package be.niob.apps.gf2011.provider;
 
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -108,6 +107,10 @@ public class EventProvider extends ContentProvider {
 	        	String sql = "select distinct(location), (select -1) as _id from events where date = '" + uri.getPathSegments().get(2) + "'";
 	        	return db.rawQuery(sql + getLocationFilterSql(), selectionArgs);
 	        }
+	        case EVENTS_NOW: {
+            	String current = ""+((System.currentTimeMillis() / 1000L) + (2*60*60));            	
+            	return db.rawQuery("select * from events where time_begin <=? and time_end >=?" + getLocationFilterSql(), new String[] {current, current});
+            }
 	        default: {
 	            // Most cases are handled with simple SelectionBuilder
 	            final SelectionBuilder builder = buildSelection(uri, match);
@@ -176,13 +179,6 @@ public class EventProvider extends ContentProvider {
             	return builder.table(Tables.EVENTS)
                 		.where(Events.EVENT_DATE + "=?", date)
                 		.where(Events.EVENT_LOCATION + "=?", location);
-            }
-            case EVENTS_NOW: {
-            	String current = ""+((System.currentTimeMillis() / 1000L) + (2*60*60));
-            	return builder.table(Tables.EVENTS)
-                		.where(Events.EVENT_TIME_BEGIN + "<=?", current)
-                		.where(Events.EVENT_TIME_END + ">=?", current);
-                		//.where(getLocationFilterSql(), "");
             }
             default: {
                 throw new UnsupportedOperationException("Unknown uri: " + uri);

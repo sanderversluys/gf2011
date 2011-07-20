@@ -7,18 +7,15 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 
 import android.content.Context;
-import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
-	private static String DB_PATH = "/data/data/be.niob.apps.gf2011/databases/";
-
 	public static String DB_NAME = "events.db";
 
-	public static int DB_VERSION = 5;
+	public static int DB_VERSION = 6;
 
 	private SQLiteDatabase db;
 

@@ -16,27 +16,14 @@ import be.niob.apps.gf2011.util.Dates;
 public class DaysActivity extends BaseActivity implements OnItemClickListener {
 
 	private ListView listView;
-	
-	private String[] dates = new String[] {
-			"16/07/2011",
-			"17/07/2011",
-			"18/07/2011",
-			"19/07/2011",
-			"20/07/2011",
-			"21/07/2011",
-			"22/07/2011",
-			"23/07/2011",
-			"24/07/2011",
-			"25/07/2011"
-	};
 	                                    	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
 		List<String> days = new ArrayList<String>();
-		for (String date : dates) {
-			days.add(Dates.parseFormat(date));
+		for (String day : Dates.days) {
+			days.add(Dates.parseFormat(day));
 		}
 		
 		listView = (ListView) findViewById(android.R.id.list);
@@ -52,7 +39,7 @@ public class DaysActivity extends BaseActivity implements OnItemClickListener {
 
 	@Override
 	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-		String date = dates[arg2];
+		String date = Dates.days[arg2];
 		Intent intent = new Intent(this, LocationActivity.class);
 		intent.putExtra(LocationActivity.DAY, date);
 		startActivity(intent);
