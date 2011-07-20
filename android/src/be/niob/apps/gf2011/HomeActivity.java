@@ -19,6 +19,7 @@ public class HomeActivity extends BaseActivity implements OnClickListener {
 	private Button btDay;
 	private Button btToday;
 	private Button btNow;
+	private Button btToilet;
 	
 	private ProgressDialog progressDialog;
   
@@ -42,6 +43,8 @@ public class HomeActivity extends BaseActivity implements OnClickListener {
     	btToday.setOnClickListener(this);
     	btNow = (Button) findViewById(R.id.home_btn_now);
     	btNow.setOnClickListener(this);
+    	btToilet = (Button) findViewById(R.id.home_btn_toilet);
+    	btToilet.setOnClickListener(this);
     }
 
 	@Override
@@ -60,6 +63,9 @@ public class HomeActivity extends BaseActivity implements OnClickListener {
 				intent = new Intent(this, EventActivity.class);
 				intent.putExtra(EventActivity.NOW, true);
 				startActivity(intent);
+				break;
+			case R.id.home_btn_toilet:
+				startActivity(new Intent(this, ToiletMapActivity.class));
 				break;
 		}
 	}

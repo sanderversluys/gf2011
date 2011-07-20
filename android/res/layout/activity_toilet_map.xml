@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" 
+	xmlns:app="http://schemas.android.com/apk/res/be.niob.apps.sf2011"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+    
+    <com.markupartist.android.widget.ActionBar
+		android:id="@+id/actionbar"
+		title="@string/app_name"
+		style="@style/ActionBar"
+		/>
+		
+	<com.google.android.maps.MapView
+	    xmlns:android="http://schemas.android.com/apk/res/android"
+	    android:id="@+id/mapview"
+	    android:layout_width="fill_parent"
+	    android:layout_height="fill_parent"
+	    android:clickable="true"
+	    android:layout_weight="1"
+	    android:apiKey="0v2DbDpJ1wTTYOMch7kh0cDneFhOzsOUjJXTnJA" 
+	/>
+	
+	<!--  0v2DbDpJ1wTQFnopp6lM8vNezGDdkxo8zluEOyA -->
+    
+</LinearLayout>
+
+
+
